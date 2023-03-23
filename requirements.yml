@@ -1,0 +1,11 @@
+name: nesy23
+channels:
+        - conda-forge
+        - defaults
+dependencies:
+        - hydra-core
+        - openai
+        - numpy
+        - pandas
+        - seaborn
+        - wandb

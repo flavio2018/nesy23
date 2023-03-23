@@ -1,0 +1,33 @@
+defaults:
+        - override hydra/hydra_logging: none
+        - override hydra/job_logging: none
+        - _self_
+
+hydra:
+  run:
+    dir: ../hydra/${hydra.job.name}/${now:%Y-%B-%d_%H-%M-%S}
+
+# run
+codename: test_start2end
+device: 'cuda'
+multi: false
+multi_nofilter: false
+n_samples: 5
+
+# testing
+bs: 128
+tf: false
+
+# model
+ckpt: ''
+d_model: 256
+num_heads: 4
+num_layers: 1
+label_pe: false
+deterministic: true
+
+# data
+step_generator: false
+filtered_swv: false  # for compat
+filtered_s2e: true
+ops: 'asmif'
