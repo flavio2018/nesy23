@@ -17,11 +17,8 @@ def train_ood(cfg):
         lte = LTEStepsGenerator(cfg.device, cfg.hash_split)
         lte_kwargs = {
             "batch_size": cfg.bs,
-            "simplify": cfg.simplify,
-            "simplify_w_value": cfg.simplify_w_value,
             "filtered_swv": cfg.filtered_swv,
             "filtered_s2e": cfg.filtered_s2e,
-            "substitute": cfg.substitute,
             "split": "train",
         }
         lte.load_sample2split(hydra.utils.get_original_cwd())
