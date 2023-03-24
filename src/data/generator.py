@@ -99,7 +99,7 @@ class LTEStepsGenerator(LTEGenerator):
     
     def load_sample2split(self, base_path):
         if not self.hash_split:
-            with open(os.path.join(base_path, "../data/new_split/sample2split_chainsol.pickle"), "rb") as f:
+            with open(os.path.join(base_path, "../sample2split_chainsol.pickle"), "rb") as f:
                 self.sample2split = pickle.load(f)
 
     def _generate_sample_naive(self, length, nesting, split, ops):
