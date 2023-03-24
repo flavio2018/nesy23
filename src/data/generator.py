@@ -76,15 +76,11 @@ class LTEGenerator:
 
 
 class LTEStepsGenerator(LTEGenerator):
-    def __init__(self, device, same_vocab=False, hash_split=True):
+    def __init__(self, device, hash_split=True):
         super().__init__(device)
         vocab_chars = string.ascii_lowercase + string.digits + '()%+*-=<>[]: '
-        self.same_vocab = same_vocab
         specials_y = [_SOS, _EOS, _PAD]
-        if same_vocab:
-            specials_x = specials_y
-        else:
-            specials_x = [_PAD]
+        specials_x = [_PAD]
         self.x_vocab = vocab(
             OrderedDict([(c, 1) for c in vocab_chars]),
             specials=specials_x,

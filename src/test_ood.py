@@ -41,7 +41,7 @@ def main(cfg):
 
 def build_generator(cfg):
 	if cfg.step_generator:
-		lte = LTEStepsGenerator(cfg.device, cfg.same_vocab)
+		lte = LTEStepsGenerator(cfg.device)
 		lte_kwargs = {
 			"batch_size": cfg.bs,
 			"filtered_swv": cfg.filtered_swv,
