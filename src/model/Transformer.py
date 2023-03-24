@@ -111,7 +111,7 @@ class Encoder(torch.nn.Module):
         self.label_pe = label_pe
 
     def forward(self, X, src_mask):
-        X = self._pe(X, self.label_pe)
+        X = self._pe(X)
         X = self._encoder(X, src_mask)
         return X
 
@@ -123,8 +123,8 @@ class Encoder(torch.nn.Module):
         X = self.layer_norm2(X)
         return X
 
-    def _pe(self, X, label=False):
-        if label:
+    def _pe(self, X):
+        if self.label_pe:
             max_seq_len = X.size(1)
             max_pe_pos = self.positional_encoding.size(1)
             val, idx = torch.sort(torch.randint(low=0, high=max_pe_pos, size=(max_seq_len,)))
@@ -157,7 +157,7 @@ class Decoder(torch.nn.Module):
         self.label_pe = label_pe
     
     def forward(self, X, Y, src_mask, tgt_mask):
-        Y = self._pe(Y, self.label_pe)
+        Y = self._pe(Y)
         Y = self._decoder(X, Y, src_mask, tgt_mask)
         return Y
 
@@ -172,8 +172,8 @@ class Decoder(torch.nn.Module):
         Y = self.layer_norm3(Y)
         return Y
 
-    def _pe(self, X, label=False):
-        if label:
+    def _pe(self, X):
+        if self.label_pe:
             max_seq_len = X.size(1)
             max_pe_pos = self.positional_encoding.size(1)
             val, idx = torch.sort(torch.randint(low=0, high=max_pe_pos, size=(max_seq_len,)))
