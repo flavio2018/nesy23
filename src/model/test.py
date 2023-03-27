@@ -1,6 +1,5 @@
 import torch
 from data.generator import _PAD
-from utils.rnn_utils import save_states, save_states_dntm, reduce_lens
 import warnings
 
 
