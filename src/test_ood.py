@@ -17,13 +17,8 @@ import logging
 @hydra.main(config_path="../conf", config_name="test_ood", version_base='1.2')
 def main(cfg):
 	warnings.filterwarnings("always", category=UserWarning)
-	now_day = dt.now().strftime('%Y-%m-%d')
-	now_time = dt.now().strftime('%H:%M')
-	logging.basicConfig(filename=os.path.join(hydra.utils.get_original_cwd(), f'../logs/{now_day}_{now_time}_{cfg.ckpt[:-4]}_test_ood.txt'),
-			filemode='a',
-			format='%(message)s',
-			datefmt='%H:%M:%S',
-			level=logging.INFO)
+	logging.info(f'CKPT: {cfg.ckpt[:-4]}')
+
 
 	lte, lte_kwargs = build_generator(cfg)
 	model = load_model(cfg, lte)
