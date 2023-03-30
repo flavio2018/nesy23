@@ -1,5 +1,7 @@
-`conda env create -f requirements.yml` or `mamba env create -f requirements.yml`
+`conda env create -f requirements.yml`
 
 `conda install torchtext==0.14.0`
 
-`pip3 install torch==1.12.1+cu113 -f https://download.pytorch.org/whl/cu113/torch_stable.html`
+`conda install pytorch==1.13.0 pytorch-cuda=11.6 -c pytorch -c nvidia`
+
+Alternatively, [Mamba](https://github.com/mamba-org/mamba) can be used.
