@@ -9,6 +9,6 @@ dependencies:
         - pandas
         - python==3.10.6
         - seaborn
-        - torchtext==0.13.1
+        - torchtext==0.14.0
         - wandb
 
