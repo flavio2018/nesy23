@@ -61,10 +61,11 @@ def load_model(cfg, lte):
 		label_pe=cfg.label_pe,
 		deterministic=cfg.deterministic,
 	).to(cfg.device)
-	model.load_state_dict(
-		torch.load(
-			os.path.join(hydra.utils.get_original_cwd(),
-				f'../models/checkpoints/{cfg.ckpt}'), map_location=cfg.device)['ut_state_dict'])
+	model_state_dict = torch.load(os.path.join(hydra.utils.get_original_cwd(), f'../models/checkpoints/{cfg.ckpt}'),
+								  map_location=cfg.device)['ut_state_dict']
+	model_state_dict.pop("encoder.timestep_encoding")
+	model_state_dict.pop("decoder.timestep_encoding")
+	model.load_state_dict(model_state_dict)
 	return model
 
 
