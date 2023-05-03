@@ -25,11 +25,11 @@ def main(cfg):
 	metric = 'characc'
 	ax, df = test_ood(model, lte, 'Nesting', max_dp_value=cfg.max_nes, use_y=cfg.use_y, tf=cfg.tf, generator_kwargs=lte_kwargs)
 	plt.savefig(os.path.join(hydra.utils.get_original_cwd(),
-		f"../reports/figures/{cfg.ckpt[:-4]}_{metric}.pdf"))
+		f"../reports/figures/{cfg.ckpt[:-4]}_{metric}_nes{cfg.max_nes}.pdf"))
 	df = df.set_index('Nesting')
 	df = np.round(df, 5)
 	df.T.to_latex(os.path.join(hydra.utils.get_original_cwd(),
-		f"../reports/tables/{cfg.ckpt[:-4]}_{metric}.tex"))	
+		f"../reports/tables/{cfg.ckpt[:-4]}_{metric}_nes{cfg.max_nes}.tex"))	
 
 
 def build_generator(cfg):
