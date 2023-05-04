@@ -38,11 +38,11 @@ def main(cfg):
 																 'split': 'test',
 																 'ops': cfg.ops})
 	plt.savefig(os.path.join(hydra.utils.get_original_cwd(),
-		f"../reports/figures/{cfg.ckpt[:-4]}_start2end{n_samples}{no_filter}.pdf"))
+		f"../reports/figures/{cfg.ckpt[:-4]}_start2end{n_samples}{no_filter}_nes{cfg.max_nes}.pdf"))
 	df = df.set_index('Nesting')
 	df = np.round(df, 5)
 	df.T.to_latex(os.path.join(hydra.utils.get_original_cwd(),
-		f"../reports/tables/{cfg.ckpt[:-4]}_start2end{n_samples}{no_filter}.tex"))
+		f"../reports/tables/{cfg.ckpt[:-4]}_start2end{n_samples}{no_filter}_nes{cfg.max_nes}.tex"))
 
 
 def test_ood_start2end(model, generator, max_nes, num_samples=10, tf=False, generator_kwargs=None, plot_ax=None, plot_label=None):
