@@ -6,7 +6,7 @@ handlers:
   file:
     class: logging.FileHandler
     formatter: simple
-    filename: "logs/${now:%Y-%B-%d_%H-%M-%S}_${codename}.log"
+    filename: "${now:%Y-%B-%d_%H-%M-%S}_${codename}.log"
 root:
   level: INFO
   handlers: [file]

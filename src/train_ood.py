@@ -10,7 +10,7 @@ from data.generator import LTEGenerator, LTEStepsGenerator, get_mins_maxs_from_m
 import wandb
 
 
-@hydra.main(config_path="../conf", config_name="train_ood")
+@hydra.main(config_path="../conf", config_name="train_ood", version_base='1.2')
 def train_ood(cfg):
     print(omegaconf.OmegaConf.to_yaml(cfg))
     if cfg.step_generator:
