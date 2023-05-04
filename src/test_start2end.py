@@ -10,7 +10,7 @@ from data.generator import LTEGenerator, LTEStepsGenerator
 from model.Transformer import Transformer
 from model.SolverCombiner import SolverCombiner
 from model.test import batch_acc, batch_seq_acc, _fix_output_shape
-from visualization.test_ood import build_generator, load_model
+from test_ood import build_generator, load_model
 import warnings
 import logging
 

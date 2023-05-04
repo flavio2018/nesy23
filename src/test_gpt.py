@@ -14,7 +14,7 @@ import seaborn as sns
 import re
 from data.generator import LTEStepsGenerator
 from model.test import batch_acc, batch_seq_acc, _fix_output_shape
-from visualization.test_ood import build_generator
+from test_ood import build_generator
 
 
 @hydra.main(config_path="../conf", config_name="gpt", version_base='1.2')
