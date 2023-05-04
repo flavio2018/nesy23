@@ -31,3 +31,4 @@ step_generator: false
 filtered_swv: false  # for compat
 filtered_s2e: true
 ops: 'asmif'
+max_nes: 10

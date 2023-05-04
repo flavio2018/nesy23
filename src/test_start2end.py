@@ -32,7 +32,7 @@ def main(cfg):
 	n_samples = f'_{str(cfg.n_samples)}-samples'
 	no_filter = '_nofilter' if cfg.multi_nofilter else ''
 
-	ax, df = test_ood_start2end(model, lte, 10, generator_kwargs={'batch_size': cfg.bs,
+	ax, df = test_ood_start2end(model, lte, cfg.max_nes, generator_kwargs={'batch_size': cfg.bs,
 																 'start_to_end': cfg.start_to_end,
 																 'filtered_s2e': cfg.filtered_s2e,
 																 'split': 'test',
