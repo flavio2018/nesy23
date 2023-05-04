@@ -33,7 +33,6 @@ def main(cfg):
 	no_filter = '_nofilter' if cfg.multi_nofilter else ''
 
 	ax, df = test_ood_start2end(model, lte, cfg.max_nes, generator_kwargs={'batch_size': cfg.bs,
-																 'start_to_end': cfg.start_to_end,
 																 'filtered_s2e': cfg.filtered_s2e,
 																 'split': 'test',
 																 'ops': cfg.ops})
