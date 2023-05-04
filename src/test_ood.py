@@ -60,6 +60,7 @@ def load_model(cfg, lte):
 		generator=lte,
 		label_pe=cfg.label_pe,
 		deterministic=cfg.deterministic,
+        max_range_pe=cfg.max_range_pe,
 	).to(cfg.device)
 	model_state_dict = torch.load(os.path.join(hydra.utils.get_original_cwd(), f'../models/checkpoints/{cfg.ckpt}'),
 								  map_location=cfg.device)['ut_state_dict']

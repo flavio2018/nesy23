@@ -23,6 +23,7 @@ num_heads: 4
 num_layers: 6
 label_pe: false
 ckpt: ''
+max_range_pe: 5000
 
 # data
 max_len: 5

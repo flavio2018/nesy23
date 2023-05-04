@@ -25,6 +25,7 @@ num_heads: 4
 num_layers: 1
 label_pe: false
 deterministic: true
+max_range_pe: 5000
 
 # data
 step_generator: false

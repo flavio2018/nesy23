@@ -35,6 +35,7 @@ def train_ood(cfg):
         num_layers=cfg.num_layers,
         generator=lte,
         label_pe=cfg.label_pe,
+        max_range_pe=cfg.max_range_pe,
     ).to(cfg.device)
     xent = torch.nn.CrossEntropyLoss(reduction="none")
     opt = torch.optim.Adam(model.parameters(), lr=cfg.lr)

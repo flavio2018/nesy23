@@ -7,7 +7,7 @@ from torch.nn import Embedding, Dropout, LayerNorm, Linear, MultiheadAttention, 
 
 class Transformer(torch.nn.Module):
     
-    def __init__(self, d_model, num_heads, num_layers, generator, label_pe=False, deterministic=True, dropout=0.1, device='cuda'):
+    def __init__(self, d_model, num_heads, num_layers, generator, label_pe=False, deterministic=True, max_range_pe=5000, dropout=0.1, device='cuda'):
         super(Transformer, self).__init__()
         self.x_emb = Linear(len(generator.x_vocab), d_model)
         self.y_emb = Linear(len(generator.y_vocab), d_model)
@@ -93,10 +93,10 @@ class Transformer(torch.nn.Module):
 
 class Encoder(torch.nn.Module):
 
-    def __init__(self, d_model, num_heads, num_layers, dropout=0.1, label_pe=False, device='cpu'):
+    def __init__(self, d_model, num_heads, num_layers, dropout=0.1, max_range_pe=5000, label_pe=False, device='cpu'):
         super(Encoder, self).__init__()
         self.device = device
-        positional_encoding = _gen_timing_signal(5000, d_model)
+        positional_encoding = _gen_timing_signal(max_range_pe, d_model)
         self.register_buffer('positional_encoding', positional_encoding)
         
         self.MHSA = MultiheadAttention(embed_dim=d_model, num_heads=num_heads, batch_first=True)
@@ -135,10 +135,10 @@ class Encoder(torch.nn.Module):
 
 class Decoder(torch.nn.Module):
     
-    def __init__(self, d_model, num_heads, num_layers, dropout=0.1, label_pe=False, device='cpu'):
+    def __init__(self, d_model, num_heads, num_layers, dropout=0.1, max_range_pe=5000, label_pe=False, device='cpu'):
         super(Decoder, self).__init__()
         self.device = device
-        positional_encoding = _gen_timing_signal(5000, d_model)
+        positional_encoding = _gen_timing_signal(max_range_pe, d_model)
         self.register_buffer('positional_encoding', positional_encoding)
         
         self.MHSA = MultiheadAttention(embed_dim=d_model, num_heads=num_heads, batch_first=True)
