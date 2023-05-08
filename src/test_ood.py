@@ -179,8 +179,11 @@ def plot_attn(model, generator, generator_kwargs):
 			ax = plot_sample_attn_matrix(sample, attn_matrix)
 			ax.set_title('P: ' + pred_str[idx] + ' | Y: ' + Y_str[idx])
 			ax.tick_params(axis="y", rotation=0)
-			wandb.log({f'N={n}': wandb.Image(fig)})
-
+	
+			if Y_str[idx] in pred_str[idx]:
+				wandb.log({f'N={n} ✅': wandb.Image(fig)})
+			else:
+				wandb.log({f'N={n} ❌': wandb.Image(fig)})
 
 if __name__ == '__main__':
 	main()
