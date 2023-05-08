@@ -177,7 +177,7 @@ def plot_attn(model, generator, generator_kwargs):
 			fig, ax = plt.subplots(1, 1, figsize=(8, 7))
 			attn_matrix = model.encoder.self_attn[idx].cpu().detach().numpy()
 			ax = plot_sample_attn_matrix(sample, attn_matrix)
-			ax.set_title('P: ', pred_str[idx] + ' | Y: ' + Y_str[idx])
+			ax.set_title('P: ' + pred_str[idx] + ' | Y: ' + Y_str[idx])
 			ax.tick_params(axis="y", rotation=0)
 			wandb.log({f'N={n}': wandb.Image(fig)})
 
