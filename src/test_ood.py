@@ -178,6 +178,7 @@ def plot_attn(model, generator, generator_kwargs):
 			attn_matrix = model.encoder.self_attn[idx].cpu().detach().numpy()
 			ax = plot_sample_attn_matrix(sample, attn_matrix)
 			ax.set_title(pred_str[idx] + ' ' + Y_str[idx])
+			plt.yticks(rotation=0) 
 			wandb.log({f'N={n}': wandb.Image(fig)})
 
 
