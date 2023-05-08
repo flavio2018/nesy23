@@ -32,7 +32,7 @@ def main(cfg):
 		settings=wandb.Settings(start_method="fork"))
 		wandb.run.name = 'visualize_attn'
 
-		plot_attn(model, lte, generator_kwargs=lte_kwargs)
+		plot_attn(model, lte, max_nes=cfg.max_nes, generator_kwargs=lte_kwargs)
 		return
 
 	metric = 'characc'
@@ -162,10 +162,10 @@ def plot_sample_attn_matrix(sample, attn_matrix):
 	return sns.heatmap(data=cut_attn_matrix, xticklabels=sample, yticklabels=sample)
 
 
-def plot_attn(model, generator, generator_kwargs):
+def plot_attn(model, generator, generator_kwargs, max_nes):
 	remove_pad = lambda batch: [b.replace('#', '') for b in batch]
 
-	for n in range(1, 3):
+	for n in range(1, max_nes):
 		X, Y, _,_,_ = generator.generate_batch(2, n, **generator_kwargs)
 		first_xs = X[:8]
 		pred = model(first_xs)
