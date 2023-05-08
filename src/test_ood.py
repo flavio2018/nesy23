@@ -111,8 +111,8 @@ def test_ood(model, generator, dp_name, num_samples=10, max_dp_value=10, use_y=F
 				output = model(X, Y=Y_model, tf=tf)
 				lenY = torch.tensor(lenY, device=X.device)
 
-				if dp_value <= 2:
-					logging.info('\n'.join([f"{x} → {o}" for x, o in zip(generator.x_to_str(X), generator.y_to_str(output))]))
+				if dp_value < 2:
+					logging.info('\n'.join([f"{x} → {o}" if y not in o for x, o, y in zip(generator.x_to_str(X), generator.y_to_str(output), generator.y_to_str(Y[:, 1:]))]))
 				output = check_output_shape(output, Y, generator)
 				avg_acc, std_acc = batch_acc(output, Y[:, 1:], Y.size(-1), generator)
 				seq_acc_avg, seq_acc_std = batch_seq_acc(output, Y[:, 1:], generator, lenY)
