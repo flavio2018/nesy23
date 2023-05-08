@@ -159,7 +159,7 @@ def test_ood(model, generator, dp_name, num_samples=10, max_dp_value=10, use_y=F
 def plot_sample_attn_matrix(sample, attn_matrix, title):
 	cut_attn_matrix = attn_matrix[:len(sample), :len(sample)]
 	# norm_cut_attn_matrix = (cut_attn_matrix - cut_attn_matrix.mean(axis=1))/cut_attn_matrix.std(axis=1)
-	return sns.heatmap(data=cut_attn_matrix, xticklabels=sample, yticklabels=sample, ax=ax, title=title)
+	return sns.heatmap(data=cut_attn_matrix, xticklabels=sample, yticklabels=sample, title=title)
 
 
 def plot_attn(model, generator, generator_kwargs):
