@@ -116,7 +116,7 @@ class Encoder(torch.nn.Module):
         return X
 
     def _encoder(self, X, src_mask):
-        Xt, attn = self.MHSA(X, X, X, key_padding_mask=src_mask)
+        Xt, self.self_attn = self.MHSA(X, X, X, key_padding_mask=src_mask)
         X = X + self.dropout1(Xt)
         X = self.layer_norm1(X)
         X = X + self.dropout2(self.transition_fn(X))
@@ -162,10 +162,10 @@ class Decoder(torch.nn.Module):
         return Y
 
     def _decoder(self, X, Y, src_mask, tgt_mask):
-        Yt, attn = self.MHSA(Y, Y, Y, attn_mask=_gen_bias_mask(Y.size(1), self.device), key_padding_mask=tgt_mask)
+        Yt, self.self_attn = self.MHSA(Y, Y, Y, attn_mask=_gen_bias_mask(Y.size(1), self.device), key_padding_mask=tgt_mask)
         Y = Y + self.dropout1(Yt)
         Y = self.layer_norm1(Y)
-        Yt, attn = self.MHA(Y, X, X, key_padding_mask=src_mask)
+        Yt, self.cross_attn = self.MHA(Y, X, X, key_padding_mask=src_mask)
         Y = Y + self.dropout2(Yt)
         Y = self.layer_norm2(Y)
         Y = self.dropout3(self.transition_fn(Y))
