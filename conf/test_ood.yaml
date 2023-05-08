@@ -10,6 +10,7 @@ hydra:
 # run
 codename: test_ood
 device: 'cuda'
+plot_attn: false
 
 # testing
 bs: 128

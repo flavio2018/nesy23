@@ -1,6 +1,7 @@
 import hydra
 import omegaconf
 import torch
+import wandb
 import pandas as pd
 import seaborn as sns
 import numpy as np
@@ -22,6 +23,18 @@ def main(cfg):
 
 	lte, lte_kwargs = build_generator(cfg)
 	model = load_model(cfg, lte)
+
+	if cfg.plot_attn:
+		wandb.init(
+		project="lte",
+		entity="flapetr",
+		mode="online",
+		settings=wandb.Settings(start_method="fork"))
+		wandb.run.name = 'visualize_attn'
+
+		plot_attn(model, lte, generator_kwargs=lte_kwargs)
+		return
+
 	metric = 'characc'
 	ax, df = test_ood(model, lte, 'Nesting', max_dp_value=cfg.max_nes, use_y=cfg.use_y, tf=cfg.tf, generator_kwargs=lte_kwargs)
 	plt.savefig(os.path.join(hydra.utils.get_original_cwd(),
@@ -141,6 +154,30 @@ def test_ood(model, generator, dp_name, num_samples=10, max_dp_value=10, use_y=F
 	
 	ax = sns.barplot(data=df, x=dp_name, y=y_axis, label=plot_label, ax=plot_ax, color='tab:blue')
 	return ax, df
+
+
+def plot_sample_attn_matrix(sample, attn_matrix, title):
+	cut_attn_matrix = attn_matrix[:len(sample), :len(sample)]
+	# norm_cut_attn_matrix = (cut_attn_matrix - cut_attn_matrix.mean(axis=1))/cut_attn_matrix.std(axis=1)
+	return sns.heatmap(data=cut_attn_matrix, xticklabels=sample, yticklabels=sample, ax=ax, title=title)
+
+
+def plot_attn(model, generator, generator_kwargs):
+	remove_pad = lambda batch: [b.replace('#', '') for b in batch]
+
+	for n in range(1, 3):
+		X, Y, _,_,_ = generator.generate_batch(2, n, **generator_kwargs)
+		first_xs = X[:4]
+		pred = model(first_xs)
+		first_xs_str = remove_pad(generator.x_to_str(first_xs))
+		pred_str = remove_pad(generator.y_to_str(pred))
+		Y_str = remove_pad(generator.y_to_str(Y[:, 1:]))
+		
+		for idx, sample in enumerate(first_xs_str):
+			fig, ax = plt.subplots(1, 1, figsize=(8, 7))
+			attn_matrix = model.encoder.self_attn[idx].cpu().detach().numpy()
+			ax = plot_sample_attn_matrix(sample, attn_matrix, pred_str[idx] + ' ' + Y_str[idx])
+			wandb.log({f'N={n}': wandb.Image(fig)})
 
 
 if __name__ == '__main__':
