@@ -36,7 +36,7 @@ def main(cfg):
 		plot_attn(model, lte, max_nes=cfg.max_nes, generator_kwargs=lte_kwargs)
 		return
 
-	if cfg.multi_output:
+	if cfg.multi:
 		model = SolverCombiner(model, cfg)
 
 	metric = 'characc'
