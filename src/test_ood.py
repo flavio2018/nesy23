@@ -129,7 +129,8 @@ def test_ood(model, generator, dp_name, num_samples=10, max_dp_value=10, use_y=F
 					_, _ = model.multi_fwd(X, tf=tf)
 					output = [[c for c in o] for o in model.final_output]
 					output = generator._build_batch(output, y=True)
-				output = model(X, Y=Y_model, tf=tf)
+				else:
+					output = model(X, Y=Y_model, tf=tf)
 				lenY = torch.tensor(lenY, device=X.device)
 
 				if dp_value < 2:
