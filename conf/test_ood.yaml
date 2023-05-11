@@ -25,6 +25,9 @@ num_layers: 1
 label_pe: false
 deterministic: true  # for compat
 max_range_pe: 5000
+multi: false  # for multi-output solver
+multi_nofilter: false  # for multi-output solver
+n_samples: 100  # for multi-output solver
 
 # data
 step_generator: false

@@ -74,9 +74,9 @@ class SolverCombiner:
 			logging.info(f"\n~~~ cur_nes {cur_nes} ~~~")
 			# Y = Y if (cur_nes == (max_nes - 1)) else None
 			if self.multi:
-				next_inputs, running = self.multi_fwd(X, n_samples=self.n_samples, tf=tf)
+				next_inputs, running = self.multi_fwd(X, tf=tf)
 			elif self.multi_nofilter:
-				next_inputs, running = self.multi_fwd_nofilter(X, n_samples=self.n_samples, running=running, tf=tf)
+				next_inputs, running = self.multi_fwd_nofilter(X, running=running, tf=tf)
 			else:
 				output = self.model(X, Y=None, tf=tf)
 			if not self.multi and not self.multi_nofilter:
@@ -85,7 +85,7 @@ class SolverCombiner:
 			self.running.append(running)
 		return lte._build_batch([list(i) + ['.'] for i in next_inputs], y=True)
 
-	def multi_fwd(self, X, n_samples, tf=False):
+	def multi_fwd(self, X, tf=False):
 		def get_valid_outputs_freq(outputs, valid):
 			outputs_freq = dict()
 			for o, v in zip(outputs, valid):
@@ -100,7 +100,7 @@ class SolverCombiner:
 		chararray_inputs = np.array([x.replace('#', '') for x in lte.x_to_str(X)])
 
 		logging.info("Sampling...")
-		for sample_idx in range(n_samples):
+		for sample_idx in range(self.n_samples):
 			output = self.model(X, Y=None, tf=tf)
 			multi_output_tensors.append(output)
 		logging.info("Done.")
@@ -114,7 +114,7 @@ class SolverCombiner:
 		multi_output_have_1_space = np.array([contain_one_space(o) for o in multi_output])
 		logging.info(f"{multi_output_have_1_space.sum(axis=1).mean()} multi-outputs have one space on avg")
 		valid &= multi_output_have_1_space
-		input_contain_multi_substring = np.array([inputs_contain_substrings(np.tile(i, n_samples), o, v) for i, o, v in zip(chararray_inputs, multi_output, valid)])
+		input_contain_multi_substring = np.array([inputs_contain_substrings(np.tile(i, self.n_samples), o, v) for i, o, v in zip(chararray_inputs, multi_output, valid)])
 		logging.info(f"{input_contain_multi_substring.sum(axis=1).mean()} multi-outputs have strings contained in inputs on avg")
 		logging.info("Examples")
 		logging.info(f"Input: {chararray_inputs[0]}")
@@ -146,11 +146,11 @@ class SolverCombiner:
 				final_output.append(candidate)
 				running.append(True)
 
-		final_output, running = np.array(final_output), np.array(running)
+		self.final_output, running = np.array(final_output), np.array(running)
 		next_input = replace_substrings_in_inputs(chararray_inputs, final_output, running)
 		return next_input, running
 
-	def multi_fwd_nofilter(self, X, n_samples, running, tf=False):
+	def multi_fwd_nofilter(self, X, running, tf=False):
 		def get_outputs_freq(outputs):
 			outputs_freq = dict()
 			for o in outputs:
@@ -163,7 +163,7 @@ class SolverCombiner:
 		chararray_inputs = np.array([x.replace('#', '') for x in lte.x_to_str(X)])
 
 		logging.info("Sampling...")
-		for sample_idx in range(n_samples):
+		for sample_idx in range(self.n_samples):
 			output = self.model(X, Y=None, tf=tf)
 			multi_output_tensors.append(output)
 		logging.info("Done.")

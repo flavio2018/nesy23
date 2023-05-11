@@ -10,6 +10,7 @@ import os
 from datetime import datetime as dt
 from data.generator import LTEGenerator, LTEStepsGenerator, get_mins_maxs_from_mask
 from model.Transformer import Transformer
+from model.SolverCombiner import SolverCombiner
 from model.test import batch_acc, batch_seq_acc, _fix_output_shape
 import warnings
 import logging
@@ -34,6 +35,9 @@ def main(cfg):
 
 		plot_attn(model, lte, max_nes=cfg.max_nes, generator_kwargs=lte_kwargs)
 		return
+
+	if cfg.multi_output:
+		model = SolverCombiner(model, cfg)
 
 	metric = 'characc'
 	ax, df = test_ood(model, lte, 'Nesting', max_dp_value=cfg.max_nes, use_y=cfg.use_y, tf=cfg.tf, generator_kwargs=lte_kwargs)
@@ -121,6 +125,10 @@ def test_ood(model, generator, dp_name, num_samples=10, max_dp_value=10, use_y=F
 			with torch.no_grad():
 				model.eval()
 				Y_model = Y[:, :-1] if use_y else None
+				if isinstance(model, SolverCombiner):
+					_, _ = model.multi_fwd(X, tf=tf)
+					output = model.final_output
+					output = generator._build_batch(output, y=True)
 				output = model(X, Y=Y_model, tf=tf)
 				lenY = torch.tensor(lenY, device=X.device)
 
