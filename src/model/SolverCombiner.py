@@ -280,3 +280,6 @@ class SolverCombiner:
 		logging.info(f"\n{running.sum()} outputs are running.")
 		
 		return next_input, running
+
+	def eval(self):
+		self.model.eval()
