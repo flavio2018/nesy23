@@ -1,3 +1,7 @@
+## Info
+Code for the paper [A Hybrid System for Systematic Generalization in Simple Arithmetic Problems](https://arxiv.org/abs/2306.17249), accepted at the 17th International Workshop on Neural-Symbolic Learning and Reasoning (NeSy 2023).
+
+## Setup
 `conda env create -f requirements.yml`
 
 `conda install torchtext==0.14.0`
